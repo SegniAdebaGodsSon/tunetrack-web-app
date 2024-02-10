@@ -1,26 +1,27 @@
 import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import { Route, BrowserRouter, Routes } from 'react-router-dom';
+import HomePage from './components/HomePage';
+import SongPage from './components/SongPage';
+import EditSongPage from './components/EditSongPage';
+import StatisticsPage from './components/StatisticsPage';
+import CreateSongPage from './components/CreateSongPage';
+import Navbar from './components/Navbar';
 
-function App() {
+const App: React.FC = () => {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
+    <BrowserRouter>
+      <header>
+        <Navbar />
       </header>
-    </div>
+      <Routes>
+        <Route path="/" element={<HomePage />} />
+        <Route path="/song/:id" element={<SongPage />} />
+        <Route path="/song/:id/edit" element={<EditSongPage />} />
+        <Route path="/song/create" element={<CreateSongPage />} />
+        <Route path="/statistics" element={<StatisticsPage />} />
+      </Routes>
+    </BrowserRouter>
   );
-}
+};
 
 export default App;
