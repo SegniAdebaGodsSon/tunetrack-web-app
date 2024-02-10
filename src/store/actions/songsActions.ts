@@ -4,7 +4,7 @@ import { Song } from '../../types';
 interface FetchSongsPayload {
     page: number;
     pageSize: number;
-    query: string;
+    search: string;
     genre: string;
 }
 

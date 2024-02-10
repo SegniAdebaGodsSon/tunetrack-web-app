@@ -3,7 +3,7 @@ import { SongsState } from '../../types';
 import { fetchSongsRequest, fetchSongsSuccess, fetchSongsFailure } from '../actions/songsActions';
 
 const initialState: SongsState = {
-    query: '',
+    search: '',
     genre: '',
     page: 1,
     pageSize: 10,
@@ -18,7 +18,7 @@ const songsReducer = createReducer(initialState, (builder) => {
         .addCase(fetchSongsRequest, (state, action) => {
             state.loading = true;
             state.error = null;
-            state.query = action.payload.query
+            state.search = action.payload.search
             state.genre = action.payload.genre
             state.page = action.payload.page;
             state.pageSize = action.payload.pageSize;

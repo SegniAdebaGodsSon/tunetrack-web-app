@@ -1,8 +1,10 @@
 import { all } from 'redux-saga/effects';
+import { watchFetchSongs } from './songsSaga';
 
-// Import and combine your sagas here
 function* rootSaga() {
-    yield all([]);
+    yield all([
+        watchFetchSongs(),
+    ]);
 }
 
 export default rootSaga;

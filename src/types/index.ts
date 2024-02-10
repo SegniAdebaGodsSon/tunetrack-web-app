@@ -7,7 +7,7 @@ export interface Song {
 }
 
 export interface SongsState {
-    query: string;
+    search: string;
     genre: string;
     page: number;
     pageSize: number;

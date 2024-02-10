@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
 
 interface SearchBarProps {
-    query: string;
+    search: string;
     genre: string;
-    onSearch: (query: string, genre: string) => void;
+    onSearch: (search: string, genre: string) => void;
 }
 
-const SearchBar: React.FC<SearchBarProps> = ({ query: initialQuery, genre: initialGenre, onSearch }) => {
+const SearchBar: React.FC<SearchBarProps> = ({ search: initialQuery, genre: initialGenre, onSearch }) => {
     const [query, setQuery] = useState(initialQuery);
     const [genre, setGenre] = useState(initialGenre);
 
