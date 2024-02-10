@@ -4,6 +4,7 @@ import { fetchSongsRequest } from '../store/actions/songsActions';
 import { RootState } from '../store/store';
 import SearchBar from './common/SearchBar';
 import Pagination from './common/Pagination';
+import { Link } from 'react-router-dom';
 
 const HomePage: React.FC = () => {
     const dispatch = useDispatch();
@@ -38,7 +39,7 @@ const HomePage: React.FC = () => {
                     <div>
                         <ul>
                             {songs.map(song => (
-                                <li key={song._id}>{song.title} - {song.artist}</li>
+                                <li key={song._id}><Link to={`/song/${song._id}`}>{song.title} - {song.artist}</Link></li>
                             ))}
                         </ul>
                     </div>
