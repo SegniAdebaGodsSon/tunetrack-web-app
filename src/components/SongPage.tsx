@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import axios from 'axios';
 import { REST_API_BASE_URL } from '../config';
 import { Link } from 'react-router-dom';
@@ -10,6 +10,8 @@ const SongPage: React.FC = () => {
     const [song, setSong] = useState<Song | null>(null);
     const [loading, setLoading] = useState<boolean>(true);
     const [error, setError] = useState<string | null>(null);
+
+    const navigate = useNavigate();
 
     useEffect(() => {
         const fetchSong = async () => {
@@ -38,6 +40,29 @@ const SongPage: React.FC = () => {
         fetchSong();
     }, [id]);
 
+    const handleDeleteSong = async (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+        event.preventDefault(); // Prevent the default button behavior
+
+        try {
+            const response = await axios.delete(`${REST_API_BASE_URL}/api/v1/songs/${id}`);
+            if (response.data.error) {
+                if (response.data.error === 'Invalid ID') {
+                    setError('Invalid song ID');
+                } else if (response.data.error === 'Song not found') {
+                    setError('Song not found');
+                } else {
+                    setError('Failed to delete song');
+                }
+            } else {
+                navigate('/');
+            }
+        } catch (error) {
+            console.error('Error deleting song:', error);
+            setError('Failed to delete song.');
+        }
+    };
+
+
     if (loading) {
         return <div>Loading...</div>;
     }
@@ -61,6 +86,7 @@ const SongPage: React.FC = () => {
             </div>
             <div>
                 <Link to={`/song/${song._id}/edit`}>Edit Song</Link>
+                <button onClick={handleDeleteSong}>Delete song</button>
             </div>
         </div>
     );
