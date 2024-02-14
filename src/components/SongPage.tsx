@@ -4,6 +4,8 @@ import axios from 'axios';
 import { REST_API_BASE_URL } from '../config';
 import { Link } from 'react-router-dom';
 import { Song } from '../types';
+import { ErrorMessage, PageHeader } from './styledComponents';
+import styled from '@emotion/styled';
 
 const SongPage: React.FC = () => {
     const { id } = useParams<{ id: string }>();
@@ -62,33 +64,72 @@ const SongPage: React.FC = () => {
         }
     };
 
+    const Container = styled.div`
+    display: flex;
+    justify-content: center;
+    max-width: 600px;
+    margin: 0 auto;
+    padding: ${(props) => props.theme.space[3]}px;
+    font-family: ${(props) => props.theme.fonts.body};
+`;
 
-    if (loading) {
-        return <div>Loading...</div>;
-    }
+    const SongDetails = styled.div`
+    display: flex;
+    gap: ${(props) => props.theme.space[2]}px;
+    flex-direction: column;
+    padding: ${props => props.theme.space[2]}px 0;
+    font-size: ${props => props.theme.fontSizes[3]}px;
+`;
 
-    if (error) {
-        return <div>Error: {error}</div>;
-    }
+    const SongActions = styled.div`
+    display: flex;
+    gap: ${props => props.theme.space[3]}px;
+    justify-content: end;
+    align-items: center;
+`;
 
-    if (!song) {
-        return <div>No song found.</div>;
-    }
+    const DetailItem = styled.p`
+    font-size: ${props => props.theme.fontSizes[1]}px;
+    opacity: 0.7;
+    margin: ${props => props.theme.space[1]}px 0;
+`;
+
+    const EditSongLink = styled(Link)`
+    text-decoration: none;
+    color: ${(props) => props.theme.colors.secondary}
+`
+    const DeleteSongButton = styled.button`
+    color: ${(props) => props.theme.colors.danger};
+    font-size: ${props => props.theme.fontSizes[2]}px;
+    cursor: pointer;
+    background: none;
+    border: none;
+    `
 
     return (
-        <div>
-            <div>
-                <h1>Song Details</h1>
-                <p>Title: {song.title}</p>
-                <p>Artist: {song.artist}</p>
-                <p>Album: {song.album}</p>
-                <p>Genre: {song.genre}</p>
-            </div>
-            <div>
-                <Link to={`/song/${song._id}/edit`}>Edit Song</Link>
-                <button onClick={handleDeleteSong}>Delete song</button>
-            </div>
-        </div>
+        <Container>
+            {
+                loading && <img src="/loading.gif" alt="" height={400} width={400} />
+            }
+            {
+                error && <ErrorMessage>Error: {error}</ErrorMessage>
+            }
+            {
+                song && !loading && !error &&
+                <div>
+                    <PageHeader>{song.title}</PageHeader>
+                    <SongDetails>
+                        <p><DetailItem>Artist:</DetailItem> {song.artist}</p>
+                        <p><DetailItem>Album:</DetailItem> {song.album}</p>
+                        <p><DetailItem>Genre:</DetailItem> {song.genre}</p>
+                    </SongDetails>
+                    <SongActions>
+                        <EditSongLink to={`/song/${song._id}/edit`}>Edit</EditSongLink>
+                        <DeleteSongButton onClick={handleDeleteSong}>Delete</DeleteSongButton>
+                    </SongActions>
+                </div>
+            }
+        </Container>
     );
 };
 

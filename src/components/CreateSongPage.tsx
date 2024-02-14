@@ -1,21 +1,25 @@
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import axios from 'axios';
 import { REST_API_BASE_URL } from '../config';
 import { useNavigate } from 'react-router-dom';
+import { Form, FormGroup, Input, Label, PageHeader, PrimaryButton } from './styledComponents';
+import styled from '@emotion/styled';
 
 const CreateSongPage: React.FC = () => {
-    const [title, setTitle] = useState('');
-    const [artist, setArtist] = useState('');
-    const [album, setAlbum] = useState('');
-    const [genre, setGenre] = useState('');
     const [error, setError] = useState<string | null>(null);
+
+    const titleRef = useRef<HTMLInputElement | null>(null)
+    const artistRef = useRef<HTMLInputElement | null>(null)
+    const albumRef = useRef<HTMLInputElement | null>(null)
+    const genreRef = useRef<HTMLInputElement | null>(null)
 
     const navigate = useNavigate();
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         try {
-            const response = await axios.post(`${REST_API_BASE_URL}/api/v1/songs`, { title, artist, album, genre });
+            const body = { title: titleRef.current?.value, artist: artistRef.current?.value, album: albumRef.current?.value, genre: genreRef.current?.value }
+            const response = await axios.post(`${REST_API_BASE_URL}/api/v1/songs`, body);
             if (response.data.error) {
                 setError(response.data.error)
             } else {
@@ -29,30 +33,41 @@ const CreateSongPage: React.FC = () => {
         }
     };
 
+    const Container = styled.div`
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: ${props => props.theme.space[3]}px;
+    max-width: 400px;
+    margin: 0 auto;
+    padding: ${props => props.theme.space[3]}px;
+    font-family: ${(props) => props.theme.fonts.body}
+`;
+
     return (
-        <div>
-            <h1>Create Song</h1>
+        <Container>
+            <PageHeader>Create Song</PageHeader>
             {error && <div>Error: {error}</div>}
-            <form onSubmit={handleSubmit}>
+            <Form onSubmit={handleSubmit}>
                 <div>
-                    <label>Title:</label>
-                    <input type="text" value={title} onChange={e => setTitle(e.target.value)} required />
+                    <Label>Title:</Label>
+                    <Input type="text" ref={titleRef} required />
                 </div>
                 <div>
-                    <label>Artist:</label>
-                    <input type="text" value={artist} onChange={e => setArtist(e.target.value)} required />
+                    <Label>Artist:</Label>
+                    <Input type="text" ref={artistRef} required />
                 </div>
                 <div>
-                    <label>Album:</label>
-                    <input type="text" value={album} onChange={e => setAlbum(e.target.value)} required />
+                    <Label>Album:</Label>
+                    <Input type="text" ref={albumRef} required />
                 </div>
-                <div>
-                    <label>Genre:</label>
-                    <input type="text" value={genre} onChange={e => setGenre(e.target.value)} required />
-                </div>
-                <button type="submit">Create</button>
-            </form>
-        </div>
+                <FormGroup>
+                    <Label>Genre:</Label>
+                    <Input type="text" ref={genreRef} required />
+                </FormGroup>
+                <PrimaryButton type="submit">Create</PrimaryButton>
+            </Form>
+        </Container>
     );
 };
 

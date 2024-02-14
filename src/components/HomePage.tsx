@@ -4,7 +4,9 @@ import { fetchSongsRequest } from '../store/actions/songsActions';
 import { RootState } from '../store/store';
 import SearchBar from './common/SearchBar';
 import Pagination from './common/Pagination';
-import { Link } from 'react-router-dom';
+import { ErrorMessage } from './styledComponents';
+import SongCard from './SongCard';
+import styled from '@emotion/styled';
 
 const HomePage: React.FC = () => {
     const dispatch = useDispatch();
@@ -22,29 +24,33 @@ const HomePage: React.FC = () => {
         dispatch(fetchSongsRequest({ search, genre, page: 1, pageSize: 10 }));
     }
 
+    const CardListContainer = styled.div`
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        `;
+
     return (
         <div>
-            <h1>Homepage</h1>
-            <SearchBar search={search} genre={genre} onSearch={onSearch} />
-            {
-                loading && <div>Loading...</div>
-            }
-            {
-                error && <div>Error: {error}</div>
-            }
 
-            {
-                songs &&
-                <div>
-                    <div>
-                        <ul>
-                            {songs.map(song => (
-                                <li key={song._id}><Link to={`/song/${song._id}`}>{song.title} - {song.artist}</Link></li>
-                            ))}
-                        </ul>
-                    </div>
-                    <Pagination currentPage={page} totalPages={Math.ceil(totalCount / pageSize)} onPageChange={handlePageChange} />
-                </div>
+            <SearchBar search={search} genre={genre} onSearch={onSearch} />
+
+            <CardListContainer>
+                {
+                    loading && <img src="/loading.gif" alt="" height={400} width={400} />
+                }
+                {
+                    error && <ErrorMessage>Error: {error}</ErrorMessage>
+                }
+
+                {songs && !loading && !error && songs.map(song => (
+                    <SongCard key={song._id} song={song} />
+                ))}
+
+            </CardListContainer>
+
+            {songs && !loading && !error &&
+                <Pagination currentPage={page} totalPages={Math.ceil(totalCount / pageSize)} onPageChange={handlePageChange} />
             }
 
         </div>

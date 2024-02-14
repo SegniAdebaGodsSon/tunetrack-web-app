@@ -1,14 +1,21 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { REST_API_BASE_URL } from '../config';
 import axios from 'axios';
 import { Song } from '../types';
+import { ErrorMessage, Form, FormGroup, Input, Label, PageHeader, PrimaryButton } from './styledComponents';
+import styled from '@emotion/styled';
 
 const EditSongPage: React.FC = () => {
     const { id } = useParams<{ id: string }>();
     const [song, setSong] = useState<Song | null>(null);
     const [loading, setLoading] = useState<boolean>(true);
     const [error, setError] = useState<string | null>(null);
+
+    const titleRef = useRef<HTMLInputElement | null>(null)
+    const artistRef = useRef<HTMLInputElement | null>(null)
+    const albumRef = useRef<HTMLInputElement | null>(null)
+    const genreRef = useRef<HTMLInputElement | null>(null)
 
     const navigate = useNavigate();
 
@@ -45,8 +52,11 @@ const EditSongPage: React.FC = () => {
                 setError('Failed to fetch song details.');
                 return
             }
-            const response = await axios.patch(`${REST_API_BASE_URL}/api/v1/songs/${song?._id}`,
-                { title: song.title, artist: song.artist, album: song.album, genre: song.genre });
+
+            const body = { title: titleRef.current?.value, artist: artistRef.current?.value, album: albumRef.current?.value, genre: genreRef.current?.value }
+
+            console.log(body);
+            const response = await axios.patch(`${REST_API_BASE_URL}/api/v1/songs/${song?._id}`, body);
 
             if (response.data.error) {
                 setError(response.data.error)
@@ -61,44 +71,50 @@ const EditSongPage: React.FC = () => {
         }
     };
 
-    if (loading) {
-        return <div>Loading...</div>;
-    }
-
-    if (error) {
-        return <div>Error: {error}</div>;
-    }
-
-    if (!song) {
-        return <div>No song found.</div>;
-    }
+    const Container = styled.div`
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: ${(props) => props.theme.space[3]}px;
+    max-width: 350px;
+    margin: 0 auto;
+    padding: ${(props) => props.theme.space[3]}px;
+    font-family: ${(props) => props.theme.fonts.body};
+`;
 
     return (
         <div>
-            <h1>Edit Song</h1>
-            {error && <div>Error: {error}</div>}
-            {
-                song &&
-                <form onSubmit={handleSubmit}>
-                    <div>
-                        <label>Title:</label>
-                        <input type="text" value={song.title} onChange={e => setSong({ ...song, title: e.target.value })} required />
-                    </div>
-                    <div>
-                        <label>Artist:</label>
-                        <input type="text" value={song.artist} onChange={e => setSong({ ...song, artist: e.target.value })} required />
-                    </div>
-                    <div>
-                        <label>Album:</label>
-                        <input type="text" value={song.album} onChange={e => setSong({ ...song, album: e.target.value })} required />
-                    </div>
-                    <div>
-                        <label>Genre:</label>
-                        <input type="text" value={song.genre} onChange={e => setSong({ ...song, genre: e.target.value })} required />
-                    </div>
-                    <button type="submit">Update</button>
-                </form>
-            }
+            <Container>
+                <PageHeader>Edit Song</PageHeader>
+                {
+                    loading && <img src="/loading.gif" alt="" height={400} width={400} />
+                }
+                {
+                    error && <ErrorMessage>Error: {error}</ErrorMessage>
+                }
+                {
+                    song && !loading && !error &&
+                    <Form onSubmit={handleSubmit}>
+                        <FormGroup>
+                            <Label>Title:</Label>
+                            <Input ref={titleRef} type="text" name="title" defaultValue={song.title} required />
+                        </FormGroup>
+                        <FormGroup>
+                            <Label>Artist:</Label>
+                            <Input ref={artistRef} type="text" name="artist" defaultValue={song.artist} required />
+                        </FormGroup>
+                        <FormGroup>
+                            <Label>Album:</Label>
+                            <Input ref={albumRef} type="text" name="album" defaultValue={song.album} required />
+                        </FormGroup>
+                        <FormGroup>
+                            <Label>Genre:</Label>
+                            <Input ref={genreRef} type="text" name="genre" defaultValue={song.genre} required />
+                        </FormGroup>
+                        <PrimaryButton type="submit">Update</PrimaryButton>
+                    </Form>
+                }
+            </Container>
         </div>
     );
 };
