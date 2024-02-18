@@ -1,46 +1,26 @@
-# Getting Started with Create React App
+# Welcome to TuneTrack
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+TuneTrack is a versatile web application designed to streamline your music management experience. Developed using cutting-edge technologies like TypeScript, React, Axios, and Emotion, TuneTrack offers a seamless platform for users to organize, discover, and manage their favorite songs effortlessly.
 
-## Available Scripts
+**Key Features:**
 
-In the project directory, you can run:
+1.  **Song Management**: TuneTrack empowers users to add, edit, and delete songs from their library with ease, providing full control over their music collection.
+2.  **Efficient Search**: With its intuitive search functionality, users can quickly locate songs based on title, artist, genre, or any other relevant criteria.
+3.  **Browse Functionality**: Explore through your music library effortlessly, whether it's by genre, artist, or album, TuneTrack ensures a smooth browsing experience.
+4.  **Responsive Interface**: The application boasts a responsive and user-friendly interface, making it accessible across various devices and screen sizes.
 
-### `npm start`
+**Technologies Used:**
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+- **TypeScript**: Leveraging the power of static typing to enhance code quality and developer productivity.
+- **React**: Utilizing the popular JavaScript library for building interactive user interfaces, ensuring a smooth and dynamic user experience.
+- **Axios**: Employing Axios for making HTTP requests, facilitating seamless communication between the frontend and backend of the application.
+- **Emotion**: Harnessing the capabilities of Emotion for efficient styling and theming, allowing for a visually appealing and customizable UI.
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+# How to run
 
-### `npm test`
+These are the steps you need to follow to run this app.
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
-
-### `npm run build`
-
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
+- Install **NodeJs** if you haven't already
+- Download the project from it's **Github** link if you haven't already
+- Run `npm i` command in your terminal in the project directory
+- Run `npm run start` command to run it in **development mode**
